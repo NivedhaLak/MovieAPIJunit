@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MovieServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">movies</a> &gt; <a href="index.source.html" class="el_package">com.api.service</a> &gt; <span class="el_source">MovieServiceImpl.java</span></div><h1>MovieServiceImpl.java</h1><pre class="source lang-java linenums">package com.api.service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.api.dao.MovieDaoService;
+import com.api.entity.Movie;
+import com.api.vo.MovieVO;
+
+@Service
+<span class="fc" id="L15">public class MovieServiceImpl implements MovieService {</span>
+
+	@Autowired
+	private MovieDaoService daoService;
+
+	@Autowired
+	private ModelMapper modelMapper;
+
+	@Override
+	public Boolean createMovies(MovieVO movieVO) {
+<span class="pc bpc" id="L25" title="1 of 6 branches missed.">		if (movieVO.getName() == null || movieVO.getYear() == null || movieVO.getYear() &lt;= 0</span>
+<span class="pc bpc" id="L26" title="1 of 2 branches missed.">				|| movieVO.getRating() == null)</span>
+<span class="fc" id="L27">			return Boolean.FALSE;</span>
+<span class="fc" id="L28">		daoService.save(modelMapper.map(movieVO, Movie.class));</span>
+<span class="fc" id="L29">		return Boolean.TRUE;</span>
+	}
+
+	@Override
+	public Boolean updateMovies(MovieVO movieVO) {
+<span class="pc bpc" id="L34" title="1 of 4 branches missed.">		if (movieVO == null || movieVO.getId() == null)</span>
+<span class="fc" id="L35">			return Boolean.FALSE;</span>
+
+<span class="fc" id="L37">		daoService.save(modelMapper.map(movieVO, Movie.class));</span>
+
+<span class="fc" id="L39">		return Boolean.TRUE;</span>
+	}
+
+	@Override
+	public List&lt;MovieVO&gt; fetchAllMovies() {
+<span class="fc" id="L44">		return convertListMovieToVOList(daoService.findAll());</span>
+	}
+
+	@Override
+	public List&lt;MovieVO&gt; fetchMoviesbyId(String id, String value) {
+<span class="pc bpc" id="L49" title="1 of 4 branches missed.">		if (&quot;year&quot;.equalsIgnoreCase(id) || &quot;rating&quot;.equalsIgnoreCase(id))</span>
+<span class="fc" id="L50">			return convertListMovieToVOList(daoService.findByColumn(id, value));</span>
+
+<span class="nc" id="L52">		return null;</span>
+	}
+
+	private List&lt;MovieVO&gt; convertListMovieToVOList(List&lt;Movie&gt; movie) {
+<span class="fc" id="L56">		List&lt;MovieVO&gt; voList = new ArrayList&lt;MovieVO&gt;();</span>
+<span class="fc" id="L57">		movie.forEach(entity -&gt; voList.add(modelMapper.map(entity, MovieVO.class)));</span>
+<span class="fc" id="L58">		return voList;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
